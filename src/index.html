@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webpack Application</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="viewport" name="viewport" content="width=640, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="App.css?{%=(o.webpack.hash)%}"/>
+</head>
+<body>
+
+<div id="application-container"></div>
+<script src="App.js?{%=(o.webpack.hash)%}"></script>
+</body>
+</html>
