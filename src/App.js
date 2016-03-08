@@ -10,8 +10,7 @@ class App extends React.Component {
             verbs: verbs,
             value: "",
             baseForms: [],
-            found: [],
-            initialLoad: true
+            found: []
         };
     }
 
@@ -33,61 +32,35 @@ class App extends React.Component {
     }
 
     handleChange(e) {
-        this.setState({
-            value: e.target.value
-        });
-    }
-
-    handleSubmit() {
-        this.setState({ initialLoad: false });
         let found = this.state.verbs.filter(verb => {
-            return verb[0] === this.state.value;
-        })[0];
+            return verb[0] === e.target.value;
+        })[0] || [];
+
         this.setState({ found });
     }
 
     renderResult() {
-        let result, cells;
-
-        if (this.state.initialLoad) return;
-        if (_.isUndefined(this.state.found)) {
-            result = "Wrong. Try another one.";
-        } else {
-            cells = this.state.found.map((cell, index) => {
-                return <div key={index} className="result-item">{cell}</div>
-            });
-            result = <div>
-                <div className="result-section thead">
-                    <div className="result-item">Base Form</div>
-                    <div>Past Simple</div>
-                    <div>Past Participle</div>
-                </div>
-                <div className="result-section tbody">
-                    { cells }
-                </div>
-            </div>;
-        }
+        let cells = this.state.found.map((cell, index) => {
+            return <div key={index} className="result-item">{cell}</div>
+        });
 
         return <div className="result">
-            
-            { result }
+            <div className="result-section thead">
+                <div className="result-item">Base Form</div>
+                <div>Past Simple</div>
+                <div>Past Participle</div>
+            </div>
+            <div className="result-section tbody">
+                { cells }
+            </div>
         </div>;
     }
 
-    renderForm() {
-        let disabled = this.state.value.length === 0;
-        return <form action="#">
-            <input ref="input" type="text" placeholder="Base Form" onChange={this.handleChange.bind(this)} />
-            <button disabled={disabled} type="submit" onClick={this.handleSubmit.bind(this)}>Get Forms</button>
-        </form>
-    }
-
     render() {
-        let form = this.renderForm();
         let result = this.renderResult();
         return (
             <div role="main">
-                { form }
+                <input ref="input" type="text" placeholder="Base Form" onChange={this.handleChange.bind(this)} />
                 { result }
             </div>
         );
