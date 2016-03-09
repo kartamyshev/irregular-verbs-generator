@@ -15,14 +15,13 @@ class App extends React.Component {
     }
 
     getVerbs() {
-        let baseForms = [];
-        let verbs = [];
-        this.state.verbs.forEach(verb => {
+        let [baseForms, verbs] = this.state.verbs.reduce((result, verb) => {
             let splitted = verb.split('\t');
+            result[0].push(splitted[0]);
+            result[1].push(splitted);
+            return result;
+        }, [[], []] );
 
-            baseForms.push(splitted[0]);
-            verbs.push(splitted);
-        });
         return { verbs, baseForms };
     }
 
@@ -46,7 +45,7 @@ class App extends React.Component {
 
         return <div className="result">
             <div className="result-section thead">
-                <div className="result-item">Base Form</div>
+                <div>Base Form</div>
                 <div>Past Simple</div>
                 <div>Past Participle</div>
             </div>
@@ -60,7 +59,11 @@ class App extends React.Component {
         let result = this.renderResult();
         return (
             <div role="main">
-                <input ref="input" type="text" placeholder="Base Form" onChange={this.handleChange.bind(this)} />
+                <input
+                    type="text"
+                    placeholder="Base Form"
+                    onChange={this.handleChange.bind(this)}
+                />
                 { result }
             </div>
         );
